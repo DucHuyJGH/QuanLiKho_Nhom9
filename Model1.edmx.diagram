@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="049a8e13130c46ee9549a151584c4bca" Name="Diagram1">
+        <EntityTypeShape EntityType="QLKModel.Bill" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Category" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.DetailBill" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Detailimportcoupon" Width="1.5" PointX="8.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Importcoupon" Width="1.5" PointX="6" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Product" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Supplier" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.SystemDatabase" Width="1.5" PointX="5.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Uploadfile" Width="1.5" PointX="7.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.UploadPhotoBill" Width="1.5" PointX="5.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.UploadPhotoProduct" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLKModel.Warehouse" Width="1.5" PointX="0.75" PointY="9.25" IsExpanded="true" />
+        <AssociationConnector Association="QLKModel.FK_Bill_Warehouse" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_DetailBill_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_Product_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_DetailBill_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_Detailimportcoupon_Importcoupon" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_Detailimportcoupon_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_Importcoupon_Warehouse" ManuallyRouted="false" />
+        <AssociationConnector Association="QLKModel.FK_Product_Supplier" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
