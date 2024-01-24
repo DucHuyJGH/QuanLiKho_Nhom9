@@ -1,0 +1,56 @@
+﻿@model QLK.Website.Model.DetailBill
+@{
+    Layout = null;
+}
+div>
+<form id="myForm">
+    @Html.HiddenFor(model => model.BillID)
+    <div class=" has-success">
+        <label>Mã mặt hàng</label>
+        @*@Html.DropDownList("ProductId", new SelectList(ViewBag.product, "ProductID", "ProductName"), new { @class = "form-control", required = "required" })*@
+        @Html.TextBoxFor(model => model.Product.ProductName, new { @class = "form-control", required = "required" })
+    </div>
+    <br />
+    <div class=" has-success">
+        <label>Đơn vị tính</label>
+        @Html.TextBoxFor(model => model.Unit, new { @class = "form-control", required = "required" })
+    </div>
+    <br />
+    <div class=" has-success">
+        <label>Số lượng</label>
+        
+        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", required = "required" })
+    </div>
+
+    <br />
+    <div class="text-right">
+        <a href="#" id="btnSubmit" class="btn btn-primary">Lưu</a>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+
+            var myformdata = $("#myForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/Output/Edit",
+                data: myformdata,
+                success: function (data) {
+                    if (data == true) {
+
+                        window.location.href = "/Danh-sach-phieu-xuat";
+                    }
+                    else {
+                        alert("Lỗi! không thể chỉnh phiếu xuất này!");
+                    }
+
+                }
+
+            })
+        })
+    })
+</script>

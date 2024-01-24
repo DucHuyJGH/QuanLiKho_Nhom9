@@ -1,0 +1,386 @@
+﻿@model PagedList.IPagedList<QLK.Website.Model.DetailBill>
+@using PagedList.Mvc;
+
+@*@model QLK.Website.Model.DetailBill*@
+
+@{
+    ViewBag.Title = "Danh sách chi tiết phiếu xuất kho";
+}
+
+<head>
+    <style>
+        .color1 {
+            color: red;
+            font-size: 150%;
+        }
+    </style>
+</head>
+<!-- DetailOutput  -->
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#DetailOutputModal"> <i class="fa fa-plus"></i> Thêm mới</a>
+                            @*<a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("Index", "DetailOutput", FormMethod.Get))
+                    {
+                        <div class="col-lg-2">
+                            <input type="hidden" id="datein" name="datein" />
+                            <input type="hidden" id="dateout" name="dateout" />
+                            <input type="text" name="datefilter" value="@ViewBag.datenow- @ViewBag.datenow" class="form-control text-center" />
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="text-right">
+                                <div class="col-lg-8">
+                                    <input type="text" id="searchid" name="SearchString" class="form-control" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="submit" value="search" class="btn btn-warning" />
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Mã chi tiết phiếu xuất
+                                            @*@Html.DisplayNameFor(model => model.Unit)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên phiếu xuất
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.Quantity)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Ngày xuất
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn vị tính
+                                            @*@Html.DisplayNameFor(model => model.Bill.BillID)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                           Đơn giá
+                                        </th>
+                                        <th style="text-align: center">
+                                            Số lượng
+
+                                        </th>
+                                        <th style="text-align: center">
+                                            Ghi chú
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tác vụ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @item.DetailBillID
+                                        </td>
+
+                                        <td>
+                                            @item.Bill.BillName
+                                            @*@Html.DisplayFor(modelItem => item.Bill.BillID)*@
+                                        </td>
+
+                                        <td>
+                                            @item.Product.ProductName
+                                            @*@Html.DisplayFor(modelItem => item.Product.ProductName)*@
+                                        </td>
+                                        <td>
+                                            @*@item.Bill.Date*@
+                                            @Html.DisplayFor(modelItem => item.Bill.Date)
+                                        </td>
+
+                                        <td>
+                                            @item.Unit
+                                            @*@Html.DisplayFor(modelItem => item.Unit)*@
+                                        </td>
+                                        <td>
+                                            @item.Price
+                                            @*@Html.DisplayFor(modelItem => item.Unit)*@
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                            @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                                        </td>
+                                        <td>
+                                            @item.Note
+                                            @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                                        </td>
+                                        <td align="center">
+                                            @*<a href="@Url.Action("Edit", new { id = item.DetailBillID })" class="btn btn-success"><i class="fa fa-pencil"></i></a>*@
+                                            <a href="#" class="btn btn-success" onclick="Editdetailoutput(@item.DetailBillID)"><i class="fa fa-pencil"></i> </a>
+                                            @*<a href="@Url.Action("Details", new { id = item.DetailBillID })" class="btn btn-primary"><i class="fa fa-eye"></i></a>*@
+                                            <a href="#" class="btn btn-danger" id="showModal" onclick="confirm(@item.DetailBillID)"><i class="fa fa-trash"></i></a>
+                                            @*<a onclick="return confirm('Bạn muôn xóa không??')" class="btn btn-danger" href="@Url.Action("Delete", new { id = item.DetailBillID })"><i class="fa fa-trash"></i></a>*@
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End DetailOutput  -->
+<!-- Add DetailOutput  -->
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="DetailOutputModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-center">Thêm chi tiết phiếu xuất</h1>
+                </div>
+                <div class="modal-body">
+                    <!-- source code-->
+                    <form id="detailoutput">
+                        <div class=" form-group">
+                            <label>Tên phiếu xuất</label>
+                            @*@Html.TextBoxFor(model => model.BillID, new { @class = "form-control", required = "required" })*@
+                            @Html.DropDownList("BillID", new SelectList(ViewBag.bill, "BillID", "BillName"), new { @class = "form-control", required = "required" })
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().BillID, new { @class = "form-control", required = "required" })*@
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mã mặt hàng</label>
+                            @Html.DropDownList("ProductID", new SelectList(ViewBag.product, "ProductID", "ProductName"), new { @class = "form-control", required = "required" })
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Product.ProductName, new { @class = "form-control", required = "required" })*@
+                        </div>
+
+                        <div class="form-group">
+                            <label>Đơn vị tính</label>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <input type="text" name="Unit" id="Unit" class="form-control" required />
+                                </div>
+                                <div class="col-lg-4">
+                                    @*<select id="unit" onchange="run()" class="form-control">
+                                        <option value="Chai">Chai</option>
+                                        <option value="Lít">Lít</option>
+                                        <option value="Lọ">Lọ</option>
+                                        <option value="Tấm">Tấm</option>
+                                    </select>*@
+                                    @Html.DropDownList("unit", new SelectList(ViewBag.unit, "Unit", "Unit"), new { @class = "form-control", required = "required", onchange = "run()" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" form-group">
+                            <label>Đơn giá</label>
+                            <input type="number" name="Price" id="Price" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Quantity, new { @class = "form-control", required = "required" })*@
+                        </div>
+                        <div class=" form-group">
+                            <label>Số lượng</label>
+                            <input type="number" name="Quantity" id="Quantity" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Quantity, new { @class = "form-control", required = "required" })*@
+                        </div>
+                        <div class=" form-group">
+                            <label>Ghi chú</label>
+                            <input type="text" name="Note" id="Note" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Quantity, new { @class = "form-control", required = "required" })*@
+                        </div>
+                    </form>
+            </div>
+
+                <div class="modal-footer">
+
+                    <a href="#" id="btnSave" class="btn btn-primary">Lưu</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<!-- End Add DetailOutput  -->
+<!-- Edit DetailOutput  -->
+<div class="modal fade" id="editdetailoutput">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa chi tiết phiếu nhập</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv10">
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Edit DetailOutput  -->
+<!-- Delete DetailOutput  -->
+<div class="modal fade " id="deletedetailoutput">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteconfirm" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="detailouputid" />
+<!--End Delete DetailOutput  -->
+
+<p class="color1 ">Tổng : @ViewBag.tong</p>
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnSave").click(function () {
+      var fd = new FormData();
+            @*fd.append('BillID', $('@ViewBag._id').val());*@
+            fd.append('BillID', $('#BillID').val());
+            fd.append('ProductID', $('#ProductID').val());
+            fd.append('Unit', $('#Unit').val());
+            fd.append('Note', $('#Note').val());
+            fd.append('Price', $('#Price').val());
+            fd.append('Quantity', $('#Quantity').val());
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create1", "DetailOutput")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (data) {
+                //alert(data);
+                //return;
+                if (data == true) {
+                    window.location.href = "/Danh-sach-chi-tiet-phieu-xuat";
+                }
+                else {
+                    alert("Lỗi!! không thể thêm chi tiết phiếu xuất này !");
+                }
+
+            }
+
+        });
+
+            //var supplierFormData = $("#detailoutput").serialize();
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/DetailOutput/Create",
+            //    data: supplierFormData,
+            //    success: function (data) {
+            //        if (data == true) {
+            //            alert("Thêm thành công!");
+            //            window.location.href = "/Danh-sach-chi-tiet-phieu-xuat";
+            //        }
+            //        else {
+            //            alert("Lỗi !! Không thể thêm mới chi tiết phiếu xuất này!")
+            //        }
+            //    }
+            //})
+        })
+
+
+        $("#btndeleteconfirm").click(function () {
+            var _id = $("#detailouputid").val();
+            $.ajax({
+                type: "POST",
+                url: "/DetailOutput/Delete",
+                data: { id: _id },
+                success: function (data) {
+                    if (data == true) {
+                        $("#deletedetailoutput").modal('hide');
+                        $("#detailouputid").val(null);
+
+                        window.location.href = "/Danh-sach-chi-tiet-phieu-xuat";
+                    }
+                    else {
+                        alert("Error!! phiếu xuất này không được xóa!");
+                    }
+                }
+
+            })
+        })
+
+    })
+
+    function run() {
+        var select = document.getElementById('unit');
+        var option = select.options[select.selectedIndex];
+
+        document.getElementById('Unit').value = option.value;
+
+    }
+
+    var confirm = function (id) {
+        $("#detailouputid").val(id);
+        $("#deletedetailoutput").modal('show');
+
+    }
+    var Editdetailoutput = function (id) {
+        var url = "/DetailOutput/Edit/" + id;
+        $("#myModalBodyDiv10").load(url, function () {
+            $("#editdetailoutput").modal("show");
+
+        })
+
+    }
+    $(function () {
+
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            //alert('â');
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + '-' + picker.endDate.format('MM/DD/YYYY'));
+            $("#datein").val(picker.startDate.format('MM/DD/YYYY'));
+            $("#dateout").val(picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+    });
+</script>

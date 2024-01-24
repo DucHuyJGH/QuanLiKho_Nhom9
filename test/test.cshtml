@@ -1,0 +1,145 @@
+﻿
+
+
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-lg-2">
+                                <label>Mã phiếu nhập</label>
+                                <input type="text" class="form-control" />
+                                @*<input type="text" name="ImportID" value="@ViewBag._id" id="ImportID" class="form-control" required />*@
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Tên mặt hàng</label>
+                                <input type="text" class="form-control" />
+                                @*@Html.DropDownList("ProductID", new SelectList(ViewBag.Product, "ProductID", "ProductName"), new { @class = "form-control", required = "required" })*@
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Đơn vị tính</label>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="text" name="Unit" id="Unit" class="form-control" required />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input type="text" class="form-control" />
+                                        @*@Html.DropDownList("unit", new SelectList(ViewBag.unit, "Unit", "Unit"), new { @class = "form-control", required = "required", onchange = "run()" })*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1">
+                                <label> Số lượng</label>
+                                <input type="number" name="Quantity" id="Quantity" class="form-control" required />
+
+                            </div>
+                            <div class="col-lg-2">
+                                <label>Đơn giá</label>
+                                <input type="number" name="Price" id="Price" class="form-control" required />
+
+                            </div>
+
+                            <div class="col-lg-2">
+                                <label>Vị trí</label>
+                                <input type="text" name="Location" id="Location" class="form-control" required />
+
+                            </div>
+                            <div class="col-lg-1">
+                                <label></label>
+                                <div class="input_fields_wrap" style="margin:5px;">
+                                    <a href="#" id="addRow" class="btn btn-success"> <i class="fa fa-plus"></i></a>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+              
+                    <div id="newRow" class="row">
+                        @*//conten*@
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnSaveDetailinput" class="btn btn-primary" value="Lưu">
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </form>
+    
+
+
+
+@*<form method="post" action="">
+    <div class="row">
+        <div class="col-lg-12">
+            <button id="addRow" type="button" class="btn btn-info">Add Row</button>
+            <div id="inputFormRow">
+
+                <div class="input-group">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="text" name="title[]" class="form-control m-input" placeholder="Enter title" autocomplete="off">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group-append">
+                                <button id="removeRow" type="button" class="btn btn-danger">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+
+            <div id="newRow"></div>
+
+        </div>
+    </div>
+</form>*@
+<script type="text/javascript">
+    // add row
+    $("#addRow").click(function () {
+        var html = '';
+      
+        html += '<div id = "inputFormRow">';
+        html += '<div class="form-group">';
+        html += '<div class="col-lg-2">';
+        html += ' <input type="text" class="form-control" />';
+        html += ' </div>';
+        html += '  <div class="col-lg-2">';
+        html += '  <input type="text" class="form-control" />';
+        html += '</div>';
+        html += '<div class="col-lg-2">';
+        html += '<div class="row">';
+        html += '  <div class="col-lg-6">';
+        html += '<input type="text" name="Unit" id="Unit" class="form-control" required />';
+        html += '  </div>';
+        html += '<div class="col-lg-6">';
+        html += '  <input type="text" class="form-control" />';
+        html += ' </div>';
+        html += ' </div>';
+        html += '</div>';
+        html += ' <div class="col-lg-1">';
+        html += '   <input type="number" name="Quantity" id="Quantity" class="form-control" required />';
+        html +=    '</div>'
+        html += '<div class="col-lg-2">';
+        html += '<input type="number" name="Price" id="Price" class="form-control" required />';
+        html +=    '</div>'
+        html += '<div class="col-lg-2">';
+        html += ' <input type="text" name="Location" id="Location" class="form-control" required />';
+        html += '</div>';
+        html += '<div class="col-lg-1">';
+        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+        html += '</div>';
+        html += '</div>';
+        html += '<br />';
+        html += '<br />';
+        html += '</div>';
+     
+        $('#newRow').append(html);
+    });
+
+    // remove row
+    $(document).on('click', '#removeRow', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
+</script>

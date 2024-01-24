@@ -1,0 +1,64 @@
+﻿@model QLK.Website.Model.Importcoupon
+@{
+    ViewBag.Title = "Chỉnh sửa phiếu nhập kho";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class=" with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ImportID)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Date, "Ngày nhập kho ", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                 @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Warehouse.WarehouseName, "Kho", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 has-success">
+                    @Html.EditorFor(model => model.Warehouse.WarehouseName, new { htmlAttributes = new { @class = "form-control" } })
+                    @*@Html.EditorFor("WarehouseID", null, htmlAttributes: new { @class = "form-control" })*@
+                    @Html.ValidationMessageFor(model => model.Warehouse.WarehouseName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ImportName, "Tên phiếu nhập", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10 has-success">
+                    @Html.EditorFor(model => model.ImportName, new { htmlAttributes = new { @class = "form-control" } })
+                    @*@Html.EditorFor("WarehouseID", null, htmlAttributes: new { @class = "form-control" })*@
+                    @Html.ValidationMessageFor(model => model.ImportName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class=" text-center col-md-6">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+                <div class=" btn btn-danger">
+                    @Html.ActionLink("Trở về", "Index")
+
+                </div>
+            </div>
+        </div>
+            }
+            <br />
+        </div>
+    </div>
+</div>

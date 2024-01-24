@@ -1,0 +1,100 @@
+﻿@model QLK.Website.Model.Detailimportcoupon
+
+@{
+    Layout = null;
+}
+<div>
+    <form id="myForm">
+
+        @Html.HiddenFor(model => model.DetailimportID)
+        <div class="form-group">
+            <label>Mã phiếu nhập</label>
+            @Html.DropDownList("ImportID", new SelectList(ViewBag.ImproID, "ImportID", "ImportName"), new { @class = "form-control", required = "required" })
+
+        </div>
+        <div class="form-group">
+            <label>Tên mặt hàng</label>
+            @Html.DropDownList("ProductID", new SelectList(ViewBag.pro, "ProductID", "ProductName"), new { @class = "form-control", required = "required" })
+        </div>
+        <div class="form-group">
+            <label>Đơn vị tính</label>
+            @Html.TextBoxFor(model => model.Unit, new { @class = "form-control", id = "Unit" })
+        </div>
+      
+
+        @*<div class="form-group">
+            <label>Đơn vị tính</label>
+            <div class="row">
+                <div class="col-lg-8">
+                    <input type="text" name="Unit" id="Unit" class="form-control" required />
+                </div>
+                <div class="col-lg-4">
+                    <select id="unit" onchange="run()" class="form-control">
+                        <option value="Chai">Chai</option>
+                        <option value="Lít">Lít</option>
+                        <option value="Lọ">Lọ</option>
+                        <option value="Tấm">Tấm</option>
+                    </select>
+                </div>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label>Đơn giá</label>
+            @Html.TextBoxFor(model => model.Price, new { @class = "form-control", @placeholder = "", type = "number" })
+        </div>
+
+        <div class="form-group">
+            <label>Số lượng</label>
+            @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control", @placeholder = "", type = "number" })
+        </div>
+
+        <div class="form-group">
+            <label>Vị trí</label>
+            @Html.TextBoxFor(model => model.Location, new { @class = "form-control", @placeholder = "" })
+        </div>
+
+
+       
+        <div class="text-right">
+            <a href="#" id="btnSubmit" class="btn btn-primary">Lưu</a>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            /*$("#loaderDiv").show();*/
+            var myformdata = $("#myForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/DetailInput/Edit",
+                data: myformdata,
+                success: function (data) {
+                    if (data == true) {
+                        //$("#loaderDiv").hide();
+                        //$("#myModal").modal("hide");
+                        window.location.href = "/Danh-sach-phieu-nhap";
+                    }
+                    else {
+                        alert("Lỗi! không thể chỉnh sửa chi tiết phiếu nhập này!");
+                    }
+
+                }
+
+            })
+        })
+    })
+
+    function run() {
+        var select = document.getElementById('unit');
+        var option = select.options[select.selectedIndex];
+
+        document.getElementById('Unit').value = option.value;
+
+    }
+
+  
+
+</script>

@@ -1,0 +1,428 @@
+﻿@*@model IEnumerable<QLK.Website.Model.symmetrical>*@
+@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.symmetrical>
+
+@{
+    ViewBag.Title = "Cân đối kho";
+}
+
+<head>
+    <style>
+        .color {
+            color: red;
+        }
+
+        .table-tk {
+            border: 2px solid black;
+        }
+        .open-button {
+            background-color: #555;
+            color: white;
+            padding: 8px 10px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.8;
+            position: fixed;
+            bottom: 11px;
+            right: 14px;
+            width: 180px;
+        }
+
+        /* The popup chat - hidden by default */
+        .chat-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 300px;
+            padding: 10px;
+            background-color: white;
+        }
+
+            /* Full-width textarea */
+            .form-container textarea {
+                width: 100%;
+                padding: 15px;
+                margin: 5px 0 22px 0;
+                border: none;
+                background: #f1f1f1;
+                resize: none;
+                min-height: 200px;
+            }
+
+                /* When the textarea gets focus, do something */
+                .form-container textarea:focus {
+                    background-color: #ddd;
+                    outline: none;
+                }
+
+            /* Set a style for the submit/send button */
+            .form-container .btn {
+                background-color: #04AA6D;
+                color: white;
+                padding: 16px 20px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 10px;
+                opacity: 0.8;
+            }
+
+            /* Add a red background color to the cancel button */
+            .form-container .cancel {
+                background-color: red;
+            }
+
+            /* Add some hover effects to buttons */
+            .form-container .btn:hover, .open-button:hover {
+                opacity: 1;
+            }
+    </style>
+</head>
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="form-group">
+                            @using (Html.BeginForm("Export", "Symmetrical", FormMethod.Post))
+                            {
+                                <div>
+                                    <button class="btn btn-success">Xuất Excel</button>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-right">
+                            @using (Html.BeginForm("Index", "Symmetrical", FormMethod.Get))
+                            {
+                                @*@Html.TextBox("SearchString", ViewBag.currentFilter as string)*@
+                                <div class="col-lg-8">
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" />
+                                </div>
+                                <div class="col-lg-4">
+                                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center">
+                                            Mã mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.ProductID)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.Product.ProductName)*@
+                                        </th>
+
+
+                                        <th style="text-align: center">
+                                            Đơn vị tính
+                                            @*@Html.DisplayNameFor(model => model.Unit)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Nhập
+                                            @*@Html.DisplayNameFor(model => model.Quantity)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tổng giá vốn
+                                        </th>
+                                        <th style="text-align: center">
+                                            Xuất
+                                            @*@Html.DisplayNameFor(model => model.Quantity)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tổng giá bán
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tồn
+                                        </th>
+                                        <th style="text-align: center">
+                                            Lãi/lỗ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ProductID)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ProductName)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Unit)
+                                            </td>
+                                            <td>
+                                                <a href="#" style="color:dodgerblue;" onclick="return detailinputSym('@item.ProductID')">@Html.DisplayFor(modelItem => item.QuantityIm)</a>
+                                                @*@Html.DisplayFor(modelItem => item.QuantityIm)*@
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.totalPricein) đ
+                                            </td>
+                                            <td>
+                                                <a href="#" style="color:dodgerblue;" onclick="return detailoutputSym('@item.ProductID')">@Html.DisplayFor(modelItem => item.QuantityOut)</a>
+
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.totalPriceou) đ
+                                            </td>
+                                            <td>
+                                                @if (@item.total < 10 && @item.total > 0)
+                                                {
+
+                                                    <div style="color:red">
+                                                        @Html.DisplayFor(modelItem => item.total)
+
+                                                        @*( @ViewBag.messe)*@
+                                                    </div>
+                                                    ViewBag.kt1 = false;
+                                                }
+                                                else
+                                                {
+                                                    if (@item.total < 0)
+                                                    {
+                                                        <div style="color:red">
+                                                            @Html.DisplayFor(modelItem => item.total)
+                                                        </div>
+                                                        ViewBag.kt = false;
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.total)
+                                                    }
+
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @if (item.totalPricetotal <= 0)
+                                                {
+                                                    <p style="color:red;">
+                                                        @Html.DisplayFor(modelItem => item.totalPricetotal) đ
+                                                    </p>
+                                                }
+                                                else
+                                                {
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => item.totalPricetotal) đ
+                                                </p>
+                                                   
+                                                 }
+
+                                            </td>
+                                        </tr>
+                                    }
+
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@if (ViewBag.kt == false)
+    {
+        <div class="text-right">
+            <p style="color:red"> Chú ý: * Sai số !</p>
+        </div>
+    }
+
+    @if (ViewBag.kt1 == false)
+    {
+        <div class="text-right">
+            <p style="color:red"> Chú ý: * Có mặt hằng sắp hết !</p>
+        </div>
+    }*@
+
+<div class="text-center">
+    <h1>
+        Thống kê
+    </h1>
+    <table style="width: 50%; display: inline-table;" class="table-tk table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <td>
+                    <p> Tổng nhập </p>
+                </td>
+                <td>
+                    <p> Tổng giá vốn </p>
+                </td>
+                <td>
+                    <p> Tổng xuất </p>
+                </td>
+                <td>
+                    <p> Tổng giá bán </p>
+                </td>
+                <td>
+                    <p> Tồn </p>
+                </td>
+                <td>
+                    <p> Lãi/Lỗ </p>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <p class="">  @ViewBag.importquantity </p>
+                </td>
+                <td>
+                    <p class="">  @ViewBag.TatolPricein đ</p>
+
+                </td>
+                <td>
+                    <p class="">  @ViewBag.detailquantity </p>
+
+                </td>
+                <td>
+                    <p class="">   @ViewBag.TatolPriceout đ</p>
+
+                </td>
+                <td>
+                    <p class="">  @ViewBag.tong </p>
+
+                </td>
+                <td>
+                    @if (ViewBag.TatolPricetotal <= 0)
+                    {
+                        <p class="color">@ViewBag.TatolPricetotal đ </p>
+                    }
+                    else
+                    {
+                     <p>@ViewBag.TatolPricetotal đ</p>
+                    }
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+
+<div class="modal fade" id="Detailsinputreporet">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Danh sách chi tiết phiếu nhập</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv15">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="DetailsOutputreporet">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Danh sách chi tiết phiếu xuất</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv16">
+            </div>
+
+        </div>
+    </div>
+</div>
+@if (ViewBag.kt == false || ViewBag.kt1 == false)
+{
+    <button class="open-button" onclick="openForm()">Thông báo</button>
+
+    <div class="chat-popup" id="myForm">
+        <form class="form-container">
+            <h2 class="text-center" >Thông báo</h2>
+            @if (ViewBag.kt == false)
+            {
+                <div>
+                    <p style="color:red" class="text-center"> Chú ý:  Sai số!</p>
+                </div>
+            }
+            @if (ViewBag.kt1 == false)
+            {
+                <div>
+                    <p style="color:red" class="text-center"> Chú ý: Có mặt hằng sắp hết!</p>
+                </div>
+            }
+          
+            <button type="button" class="btn btn-danger" onclick="closeForm()">Đóng</button>
+        </form>
+    </div>
+}
+
+
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+
+<script>
+
+
+    function detailinputSym(id) {
+        var url = "/Symmetrical/Details1/" + id;
+        $("#myModalBodyDiv15").load(url, function () {
+            $("#Detailsinputreporet").modal("show");
+
+        })
+
+    }
+    function detailoutputSym(id) {
+        var url = "/Symmetrical/Details2/" + id;
+        $("#myModalBodyDiv16").load(url, function () {
+            $("#DetailsOutputreporet").modal("show");
+
+        })
+
+    }
+    function openForm() {
+        document.getElementById("myForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+    }
+</script>

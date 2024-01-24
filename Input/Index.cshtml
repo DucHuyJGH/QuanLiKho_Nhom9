@@ -1,0 +1,400 @@
+﻿@*@model IEnumerable<QLK.Website.Model.Importcoupon>*@
+@*@model QLK.Website.Model.Importcoupon*@
+@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.Importcoupon>
+@{
+    ViewBag.Title = "Danh sách phiếu nhập";
+}
+@*sesion search: @ViewBag.seacrchform
+    sesion id :@ViewBag._id*@
+@*datein : @ViewBag.datein
+date out: @ViewBag.datein*@
+<div class="row" id="index_input">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#inpuaModal"><i class="fa fa-plus"></i> Thêm mới</a>
+                            @*<a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        @using (Html.BeginForm("Index", "Input", FormMethod.Get))
+                        {
+                        <div class="row">
+                            <div class="col-lg-4">
+
+                                <input type="hidden" id="datein" name="datein" />
+                                <input type="hidden" id="dateout" name="dateout" />
+
+                                <input type="text" name="datefilter" value="@ViewBag.datenow - @ViewBag.datenow" class="form-control text-center" />
+                               
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="text-right">
+
+                                    <div class="row">
+                                        <div class=" col-lg-8">
+                                            <input type="text" name="SearchString" class="form-control" />
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="submit" value="Tìm kiếm" class="btn btn-warning" onclick="selectdate()" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                            
+                        }
+                    </div>
+                   
+                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center">
+                                           Ảnh hóa đơn
+                                        </th>
+                                        <th style="text-align: center">
+                                          Mã phiếu nhập kho
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên phiếu nhập kho
+                                        </th>
+                                        <th style="text-align: center">
+                                            Ngày nhập kho
+                                        </th>
+                                        <th style="text-align: center">
+                                            Kho
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tác vụ
+                                        </th>
+                                    </tr>
+
+                                    @foreach (var item in Model)
+                                    {
+
+
+                                    <tr>
+                                        <td align="center">
+                                            @foreach (var ite in ViewBag.UploadphotoImport)
+                                            {
+                                                if (ite.ID == item.ImportID)
+                                                {
+                                                    <img src="@Url.Content(ite.Path)" style="height:50px;width:50px">
+                                                }
+
+                                            }
+                                        </td>
+                                    <td>
+                                        @item.ImportID
+                                    </td>
+                                    <td>
+
+                                        @item.ImportName
+                                    </td>
+                                    <td>
+                                        @*@item.Date*@
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        @item.Warehouse.WarehouseName
+                                    </td>
+                                    <td align="center">
+                                        @*<a href="~/DetailInput/Index" class="btn btn-success">Thêm</a>*@
+                                        @*<a href="@Url.Action("Edit", new { id = item.ImportID })" class="btn btn-success"><i class="fa fa-pencil"></i></a>*@
+                                        <a href="#" class="btn btn-success" onclick="Editinput(@item.ImportID)"><i class="fa fa-pencil"></i> </a>
+                                        @*<a href="@Url.Action("Details", new { id = item.ImportID })" class="btn btn-primary"><i class="fa fa-eye"></i></a>*@
+                                        @*<a href="#" class="btn btn-primary" onclick="detailsinpu(@item.ImportID)"> <i class="fa fa-eye"></i></a>*@
+                                        <a href="#" class="btn btn-primary" onclick="sesion(@item.ImportID)"> <i class="fa fa-eye"></i></a>
+                                        @*<a onclick="popup();" href="@Url.Action("Details", new { id = item.ImportID })" class="btn btn-default"><i class="fa fa-eye"></i></a>*@
+                                        @*@Html.ActionLink("Details", "Details", new { id = item.ImportID })*@
+                                        <a href="#" class="btn btn-danger" id="showModal" onclick="confirm(@item.ImportID)"><i class="fa fa-trash"></i></a>
+                                        @*<a onclick="return confirm('Bạn muôn xóa không??')" class="btn btn-danger" href="@Url.Action("Delete", new { id = item.ImportID })"><i class="fa fa-trash"></i></a>*@
+                                    </td>
+                                </tr>
+                                    }
+
+                                </thead>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div id="detailsDiv">
+    <!-- ...content... -->
+</div>
+
+<div class="container">
+
+    <!-- Modal -->
+    <div class="modal fade" id="inpuaModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-center">Thêm phiếu nhập</h1>
+                </div>
+                <div class="modal-body">
+                    <!-- source code-->
+
+                    <form id="inputFrom">
+
+
+                        @*<div class=" has-success">
+            <label>Mã phiếu nhập kho</label>
+            @Html.TextBoxFor(model => model.FirstOrDefault().ImportID, new { @class = "form-control", required = "required" })
+        </div>*@
+                        <div class="form-group">
+                            <label>Chọn kho</label>
+                            @Html.DropDownList("WarehouseID", new SelectList(ViewBag.Warehouses, "WarehouseID", "WarehouseName"), new { @class = "form-control", required = "required" })
+                        </div>
+
+                        <div class=" form-group">
+                            <label>Tên phiếu nhập</label>
+                            <input type="text" name="ImportName"  id="ImportName"class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().ImportName, new { @class = "form-control " })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Ảnh</label>
+
+                            @*@Html.TextBox("Photo")*@
+                            <input type="File" name="file" id="file" multiple accept="image/*" style="width:100%;" />
+                            @*<input type="file" name="fileUpload" id="fileUpload" required />*@
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+
+                    <a href="#" id="btnSave1" class="btn btn-primary">Lưu</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="deleteinput">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteconfirm" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="inputid" />
+
+<div class="modal fade" id="EditInput">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa phiếu nhập</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv4">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detailsinput">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chi tiết phiếu nhập</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv11">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="input_area">
+    @{ Html.RenderAction("getpaging", "Input", new { page = 1 });}
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $("#btnSave1").click(function () {
+
+        var fd = new FormData();
+        $.each($("input[type='file']")[0].files, function (i, file) {
+            fd.append('file', file);
+        });
+      /*  fd.append('file', $('#file')[0].files[0]);*/
+        fd.append('WarehouseID', $('#WarehouseID').val());
+        fd.append('ImportName', $('#ImportName').val());
+        @*$.post('@Url.Action("Create")', fd, function (data) {
+            alert(data.status);
+        });*@
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (_data) {
+                if (_data.status == true) {
+                    alert("Thêm thành công!");
+                    window.location.href = "/Danh-sach-phieu-nhap";
+                }
+                else {
+                    alert("Lỗi!! không thể thêm phiếu nhập này !");
+                }
+                /*console.log('upload success!')*/
+                //$('#data').empty();
+                //$('#data').append(data);
+
+            }
+
+        });
+            //var supplierFormData = $("#inputFrom").serialize();
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/Input/Create",
+            //    data: supplierFormData,
+            //    success: function (data) {
+            //        if (data == true) {
+            //            alert("Thêm thành công!");
+            //            window.location.href = "/Danh-sach-phieu-nhap";
+            //        }
+            //        else {
+            //            alert("Lỗi!! không thể thêm mới phiếu nhập này!!")
+            //        }
+
+            //    }
+            //})
+        })
+
+        $("#btndeleteconfirm").click(function () {
+            var _id = $("#inputid").val();
+            $.ajax({
+                type: "POST",
+                url: "/Input/Delete",
+                data: { id: _id },
+                success: function (data) {
+                    if (data == true) {
+                        $("#deleteinput").modal('hide');
+                        $("#inputid").val(null);
+
+                        window.location.href = "/Danh-sach-phieu-nhap";
+                    }
+                    else {
+                        alert("Error!! phiếu nhập này không được xóa!");
+                    }
+                }
+
+            })
+        })
+
+
+    })
+
+    var confirm = function (id) {
+        $("#inputid").val(id);
+        $("#deleteinput").modal('show');
+
+    }
+    var Editinput = function (id) {
+        var url = "/Input/Edit/" + id;
+        $("#myModalBodyDiv4").load(url, function () {
+            $("#EditInput").modal("show");
+
+        })
+
+    }
+    var detailsinpu = function (id) {
+        var url = "/Input/DetailsPar/" + id;
+        $("#myModalBodyDiv11").load(url, function () {
+            $("#detailsinput").modal("show");
+
+        })
+
+    }
+
+    var sesion = function (id) {
+        $.ajax({
+            type: "POST",
+            url: "/Input/kt/" + id,
+            success: function (data) {
+                window.location.href = "/Danh-sach-phieu-nhap";
+            }
+        })
+    }
+    //var selectdate = function () {
+    //    var _id = $("#srt").val();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Input/selectdate/" + _id,
+
+    //    })
+    //}
+
+    //function run() {
+    //    document.getElementById("srt").value = document.getElementById("Ultra").value;
+    //}
+    $(function () {
+
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            //alert('â');
+           $(this).val(picker.startDate.format('MM/DD/YYYY') + '-' + picker.endDate.format('MM/DD/YYYY'));
+            $("#datein").val(picker.startDate.format('MM/DD/YYYY')) ;
+            $("#dateout").val(picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+    });
+
+</script>

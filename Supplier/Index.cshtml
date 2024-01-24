@@ -1,0 +1,433 @@
+﻿@*@model IEnumerable<QLK.Website.Model.Supplier>*@
+@*@model QLK.Website.Model.Supplier*@
+@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.Supplier>
+@{
+    ViewBag.Title = "Danh sách nhà cung cấp";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <p>
+                            @*@Html.ActionLink("Thêm nhà cung cấp", "Create")*@
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Thêm mới</a>
+                        </p>
+                    </div>
+                    <div class="col-lg-7">
+                        @using (Html.BeginForm("import", "Supplier", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <a class="btn btn-success" data-toggle="modal" data-target="#formimportsupplier"><i class="fa fa-plus"></i>Import</a>
+                            <div class="modal fade" id="formimportsupplier" role="dialog">
+                                <div class="modal-dialog" style="width:1000px;">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h1 class="modal-title text-center">Thêm  nhà cung cấp</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                Format excel
+                                                <table class="table table-bordered table-hover table-striped">
+                                                    <thead>
+                                                        <tr style="color:darkgray;">
+                                                            <th style="text-align: center">
+                                                                Tên nhà cung cấp
+                                                             
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Tên liên hệ
+                                                            
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Địa chỉ
+                                                            
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Thành phố
+                                                             
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Mã bưu điện
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Quốc gia
+                                                             
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Số điện thoại
+                                                              
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Ghi chú
+
+                                                            </th>
+                                                           
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                Viettel post
+                                                            </td>
+                                                            <td>
+                                                                Viettel
+                                                            </td>
+                                                            <td>
+                                                                Huế
+                                                            </td>
+                                                            <td>
+                                                               Huế
+                                                            </td>
+                                                            <td>
+                                                                505050
+                                                            </td>
+                                                            <td>
+                                                                Việt nam
+                                                            </td>
+                                                            <td>
+                                                               18001088
+
+                                                            </td>
+                                                            <td>
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                      
+                                                    </tbody>
+                                                </table>
+                                                Chú ý: - Import từ dòng thứ 2 trở đi.
+                                            </div>
+                                            <br />
+                                            <input name="exlfile" type="file" id="exlfile" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a href="#" id="importsupplier" class="btn btn-primary">Thêm</a>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-right">
+                            @using (Html.BeginForm("Index", "Supplier", FormMethod.Get))
+                            {
+                                
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th style="text-align: center">
+                                            Tên nhà cung cấp
+                                            @*@Html.DisplayNameFor(model => model.SupplierName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên liên hệ
+                                            @*@Html.DisplayNameFor(model => model.ContactName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Địa chỉ
+                                            @*@Html.DisplayNameFor(model => model.Adderss)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Thành phố
+                                            @*@Html.DisplayNameFor(model => model.City)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Mã bưu điện
+                                        </th>
+                                        <th style="text-align: center">
+                                            Quốc gia
+                                            @*@Html.DisplayNameFor(model => model.Country)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Số điện thoại
+                                            @*@Html.DisplayNameFor(model => model.Phone)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                          Ghi chú
+                                           
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.SupplierName)*@
+                                            @item.SupplierName
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.ContactName)*@
+                                            @item.ContactName
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.Adderss)*@
+                                            @item.Adderss
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.City)*@
+                                            @item.City
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.Zipcode)*@
+                                            @item.Zipcode
+                                        </td>
+                                        <td>
+                                            @item.Country
+                                            @*@Html.DisplayFor(modelItem => item.Country)*@
+                                        </td>
+                                        <td>
+                                            @item.Phone
+                                            @*@Html.DisplayFor(modelItem => item.Phone)*@
+                                        </td>
+                                        <td>
+                                            @item.Note
+                                          
+                                        </td>
+                                        <td align="center">
+                                            @*@Html.ActionLink("Edit", "Edit", new { id = item.SupplierID })*@
+                                            @*<a href="@Url.Action("Edit", new { id = item.SupplierID })" class="btn btn-success"><i class="fa fa-pencil"></i></a>*@
+                                            <a href="#" class="btn btn-success" onclick="EditSupplier(@item.SupplierID)"><i class="fa fa-pencil"></i> </a>
+                                            @*@Html.ActionLink("Delete", "Delete", new { id = item.SupplierID })*@
+                                            @*<a class="delete-link btn btn-danger" onclick="return confirm('Bạn muôn xóa không??')" href="@Url.Action("Delete", new { id = item.SupplierID })"><i class="fa fa-trash"></i></a>*@
+                                            <a href="#" class="btn btn-danger" id="showModal" onclick="confirm(@item.SupplierID)"><i class="fa fa-trash"></i></a>
+
+
+
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+<!-- add supplier-->
+<div class="container">
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h1 class="modal-title text-center">Thêm nhà cung cấp</h1>
+                </div>
+                <div class="modal-body">
+                    <!-- source code-->
+                    @*<div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-success">
+                                <div class=" with-border">*@
+                    <form id="supplierform">
+                        <div class="form-group">
+                            <label>Tên nhà cung cấp</label>
+                            <input type="text" name="SupplierName" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().SupplierName, new { @class = "form-control" })*@
+                        </div>
+                        <div class=" form-group">
+                            <label>Tên liên hệ</label>
+                            <input type="text" name="ContactName" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().ContactName, new { @class = "form-control" })*@
+                        </div>
+                        <div class=" form-group">
+                            <label>Địa chỉ</label>
+                            <input type="text" name="Adderss" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Adderss, new { @class = "form-control s" })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Thành phố</label>
+                            <input type="text" name="City" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().City, new { @class = "form-control " })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Mã Bưu Chính</label>
+                            <input type="text" name="Zipcode" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Zipcode, new { @class = "form-control " })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Quốc gia</label>
+                            <input type="text" name="Country" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Country, new { @class = "form-control s" })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Số điện thoại</label>
+                            <input type="text" name="Phone" class="form-control" required />
+                            @*@Html.TextBoxFor(model => model.FirstOrDefault().Phone, new { @class = "form-control" })*@
+                        </div>
+                        <div class="form-group">
+                            <label>Ghi chú</label>
+                            <input type="text" name="Note" class="form-control" required />
+                          
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="btnSave" class="btn btn-primary">Lưu</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="editsupplier">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa nhà cung cấp</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv8">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="deletesupplier">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteconfirm" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="supplierid" />
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#btnSave").click(function () {
+            var supplierFormData = $("#supplierform").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Supplier/Create",
+                data: supplierFormData,
+                success: function (data) {
+                    if (data == true) {
+                        alert("Thêm thành công!");
+                        window.location.href = "/Danh-sach-nha-cung-cap";
+                    }
+                    else {
+                        alert("Lỗi! Không thể thêm nhà cung cấp này");
+                    }
+
+                },
+                erorr: function () {
+                    window.confirm(message);
+                }
+
+            })
+        })
+
+        $('#importsupplier').click(function () {
+        var fd = new FormData();
+        fd.append('exlfile', $('#exlfile')[0].files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("import")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (_data) {
+
+                if (_data == true) {
+
+                    window.location.href = "/Danh-sach-san-pham";
+                }
+                else {
+                    alert("Lỗi!! không thể import file này !");
+                }
+
+
+            }
+
+        });
+    });
+        $("#btndeleteconfirm").click(function () {
+            var _id = $("#supplierid").val();
+            $.ajax({
+                type: "POST",
+                url: "/Supplier/Delete",
+                data: { id: _id },
+                success: function (data) {
+                    if (data == true) {
+                        $("#deletesupplier").modal('hide');
+                        $("#supplierid").val(null);
+
+                        window.location.href = "/Danh-sach-nha-cung-cap";
+                    }
+                    else {
+                        alert("Error!! Nhà cung cấp này không được xóa!");
+                    }
+                }
+
+            })
+        })
+    })
+    var confirm = function (id) {
+        $("#supplierid").val(id);
+        $("#deletesupplier").modal('show');
+
+    }
+
+    var EditSupplier = function (id) {
+        var url = "/Supplier/Edit/" + id;
+        $("#myModalBodyDiv8").load(url, function () {
+            $("#editsupplier").modal("show");
+
+        })
+
+    }
+
+</script>

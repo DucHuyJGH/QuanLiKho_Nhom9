@@ -1,0 +1,79 @@
+﻿@model QLK.Website.Model.Importcoupon
+
+@{
+   
+    ViewBag.Title = "Details";
+}
+
+@*<button type="button" class="btn btn-primary">Thêm mới</button>*@
+
+<h2 class="text-center">Chit tiết phiếu nhập kho</h2>
+
+<div class="box box-primary">
+
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            <th>
+                Mã hóa đơn
+            </th>
+            <th>
+                Mã chi tiết hóa đơn
+            </th>
+
+            <th>
+                Mã hàng
+            </th>
+            <th>
+                Tên mặt hàng
+            </th>
+            <th>
+                Ngày nhập
+            </th>
+            <th>
+                đơn giá
+            </th>
+            <th>
+                số lượng
+            </th>
+
+        </tr>
+
+        @foreach (var item in ViewBag.Imp)
+        {
+    <tr>
+        <td>
+            @item.ImportID
+        </td>
+        <td>
+            @item.DetailimportID
+
+        </td>
+
+        <td>
+            @item.ProductID
+        </td>
+
+        <td>
+            @item.Product.ProductName
+        </td>
+        <td>
+            @Model.Date
+        </td>
+        <td>
+            @item.Unit
+        </td>
+        <td>
+            @item.Quantity
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.DetailimportID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.DetailimportID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.DetailimportID })
+        </td>*@
+    </tr>
+        }
+    </table>
+</div>
+
+
+
