@@ -1,0 +1,47 @@
+﻿@model QLK.Website.Model.Warehouse
+
+@{
+    Layout = null;
+}
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(model=> model.WarehouseID)
+        <div class=" form-group">
+            <label>Tên kho</label>
+            @Html.TextBoxFor(model => model.WarehouseName, new { @class = "form-control", @placeholder = "" })
+        </div>
+    <div class="form-group">
+        <label>Số lượng</label>
+        @Html.TextBoxFor(model => model.Soluong, new { @class = "form-control", @placeholder = "" , Type="number"})
+    </div>
+        <div class="text-right">
+            <a href="#" id="btnSubmit" class="btn btn-primary">Lưu</a>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+
+            var myformdata = $("#myForm").serialize();
+            $.ajax({
+
+                type: "POST",
+                url: "/Warehouse/Edit",
+                data: myformdata,
+                success: function (data) {
+                    if (data == true) {
+
+                        window.location.href = "/Danh-sach-kho";
+                    }
+                    else {
+                        alert("Lỗi! không thể chỉnh sửa mặt hàng này!");
+                    }
+
+                }
+
+            })
+        })
+    })
+</script>

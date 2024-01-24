@@ -1,0 +1,104 @@
+﻿@model QLK.Website.Model.Bill
+
+@{
+    Layout = null;
+}
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(model => model.BillID , new { @id ="BillID" })
+
+        @Html.TextBoxFor(model => model.Date, new { @class = "form-control", hidden = "hidden" ,id="Date" })
+        @*@Html.TextBoxFor(model => model.Photo, new { @class = "form-control", hidden = "hidden" })*@
+        <div class="row">
+            <div class="form-group">
+                <div class="col-lg-4">
+                    <label>Ảnh</label>
+                </div>
+                <div class="col-lg-8">
+                    @foreach (var ite in ViewBag.UploadphotoBill)
+                    {
+                        if (ite.IdBill == Model.BillID)
+                        {
+                            <img src="@Url.Content(ite.Path)" style="height:50px;width:50px">
+                        }
+
+                    }
+
+                </div>
+
+            </div>
+        </div>
+        <input type="file" name="file2" id="file2" multiple accept="image/*" style="width:100%;" />
+        <div class="form-group">
+            <label>Tên kho</label>
+            @*@Html.TextBoxFor(model => model.Warehouse.WarehouseName, new { @class = "form-control", @placeholder = "" })*@
+            @Html.DropDownList("WarehouseID", new SelectList(ViewBag.ware, "WarehouseID", "WarehouseName"), new { @class = "form-control", required = "required" })
+        </div>
+
+        <div class="form-group">
+            <label>Tên phiếu xuất</label>
+            @Html.TextBoxFor(model => model.BillName, new { @class = "form-control", @placeholder = "" , id= "BillName1" })
+        </div>
+        <div class="text-right">
+            <a href="#" id="btnSubmit" class="btn btn-primary">Lưu</a>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+             var fd = new FormData();
+            $.each($("input[name='file2']")[0].files, function (i, file) {
+                fd.append('file', file);
+            });
+            fd.append('BillID', $('#BillID').val());
+            fd.append('Date', $('#Date').val());
+            fd.append('WarehouseID', $('#WarehouseID').val());
+            fd.append('BillName', $('#BillName1').val());
+            $.ajax({
+                type: "POST",
+                 url:'@Url.Action("Edit")',
+                data: fd,
+                processData: false,
+                contentType: false,
+                success: function (_data) {
+
+                    if (_data == true) {
+                        window.location.href = "/Danh-sach-phieu-xuat";
+                    }
+                    else {
+                        alert("Lỗi! không thể chỉnh phiếu xuất này!");
+                    }
+
+                }
+
+            })
+
+
+
+
+
+
+            //var myformdata = $("#myForm").serialize();
+            //$.ajax({
+
+            //    type: "POST",
+            //    url: "/Output/Edit",
+            //    data: myformdata,
+            //    success: function (data) {
+            //        if (data == true) {
+
+            //            window.location.href = "/Danh-sach-phieu-xuat";
+            //        }
+            //        else {
+            //            alert("Lỗi! không thể chỉnh phiếu xuất này!");
+            //        }
+
+            //    }
+
+            //})
+        })
+    })
+</script>

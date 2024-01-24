@@ -1,0 +1,60 @@
+﻿@model QLK.Website.Model.DetailBill
+
+@{
+    ViewBag.Title = "Chi tiết phiếu xuất kho";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            
+                <table class="table table-bordered table-hover table-striped">
+
+                    <tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.DetailBillID)
+                        </td>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Bill.BillID)
+                        </td>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Product.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Unit)
+                        </td>
+                        <td>
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => model.DetailBillID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Bill.BillID)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(model => model.Product.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Unit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.Quantity)
+                        </td>
+
+
+                    </tr>
+                </table>
+        </div>
+    </div>
+</div>
+ 

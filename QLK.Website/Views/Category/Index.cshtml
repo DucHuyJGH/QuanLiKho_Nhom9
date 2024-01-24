@@ -1,0 +1,335 @@
+﻿@*@model IEnumerable<QLK.Website.Model.Category>*@
+@*@model QLK.Website.Model.Category*@
+@using PagedList;
+@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.Category>
+@{
+    ViewBag.Title = "Danh sách loại hàng";
+}
+
+<head>
+    <style>
+        .modal-window > div {
+            width: 400px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 2em;
+            background: white;
+        }
+    </style>
+</head>
+
+<!-- Add category Modal -->
+<div class="modal fade" id="categoryForm" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title text-center">Thêm loại hàng</h1>
+            </div>
+            <div class="modal-body">
+                <!-- source code-->
+                <form id="Categoryform">
+                    <div class="form-group">
+                        <label>Tên loại hàng</label>
+                        <input type="text" name="CategoryName" class="form-control" required />
+                        @*@Html.TextBoxFor(model => model.FirstOrDefault().CategoryName, new { @class = "form-control", required = "required" })*@
+                    </div>
+                    <div class=" form-group">
+                        <label>Mô tả</label>
+                        <input type="text" name="Description" class="form-control" required />
+                        @*@Html.TextBoxFor(model => model.FirstOrDefault().Description, new { @class = "form-control", required = "required" })*@
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btnSave" class="btn btn-primary">Lưu</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add category Modal -->
+<!-- Delete category Modal -->
+<div class="modal fade " id="deletecategoryModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteconfirm" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="categoryId" />
+<!-- End Delete category Modal -->
+<!-- Category Content -->
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            @*<a href="#" class="btn btn-success" data-toggle="modal" data-target="#categoryForm"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+                            @*<a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#categoryForm"> <i class="fa fa-plus"></i>Thêm mới</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="text-left">
+                            @using (Html.BeginForm("Import", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                               
+
+                                <a class="btn btn-success" data-toggle="modal" data-target="#formimortcate"> <i class="fa fa-plus"></i> Import</a>
+
+                                <div class="modal fade" id="formimortcate" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h1 class="modal-title text-center">Thêm loại mặt hàng</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div>
+                                                    Format excel 
+                                                    <table class="table table-bordered table-hover table-striped">
+                                                        <thead>
+                                                            <tr style="color:darkgray;">
+                                                                <th style="text-align: center">
+                                                                    Tên loại hàng
+                                                                 
+                                                                <th style="text-align: center">
+                                                                    Mô tả
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                    Chú ý: - Import từ dòng thứ 2 trở đi.
+
+                                                </div>
+                                                <br />
+                                                
+                                                <input type="file" name="excelfile" id="excelfile"/>
+                                                @*<input type="submit" name="submit"/>*@
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="#" id="import" class="btn btn-primary">Thêm</a>
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-right">
+                            @using (Html.BeginForm("Index", "Category", FormMethod.Get))
+                            {
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+                                </div>
+                                @*@Html.TextBox("SearchString", ViewBag.currentFilter as string)*@
+                                @*<input type="submit" value="Tìm kiếm" class="btn btn-warning" />*@
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center">
+                                            Tên loại hàng
+                                            @*@Html.DisplayNameFor(model => model.CategoryName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Mô tả
+                                            @*@Html.DisplayNameFor(model => model.Description)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tác vụ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+
+                                                @item.CategoryName
+                                            </td>
+                                            <td>
+                                                @item.Description
+                                            </td>
+                                            <td align="center">
+                                                @*<a class="btn btn-success" onclick="Update(@item.CategoryID)" data-id="@item.CategoryID"><i class="fa fa-pencil"></i></a>*@
+                                                @*<a href="@Url.Action("Edit", new { id = item.CategoryID })" class="btn btn-success"><i class="fa fa-pencil"></i></a>*@
+                                                <a href="#" class="btn btn-success" onclick="Editcategory(@item.CategoryID)"><i class="fa fa-pencil"></i> </a>
+                                                @*@Html.ActionLink("Delete", "Delete", new { id = item.CategoryID })*@
+                                                <a href="#" class="btn btn-danger" id="showModal" onclick="confirm(@item.CategoryID)"><i class="fa fa-trash"></i></a>
+                                                @*<a onclick="return confirm('Bạn muôn xóa không??')" class="btn btn-danger" href="@Url.Action("Delete", new { id = item.CategoryID })"><i class="fa fa-trash"></i></a>*@
+
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Category Content -->
+<!--Edit Category Modal -->
+<div class="modal fade" id="editcategory">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa loại mặt hàng</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv1">
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--End Edit Category Modal -->
+<!-- Pagelist Category -->
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+<!--End Pagelist Category -->
+
+
+<script>
+    $(document).ready(function () {
+        //lưu Category Modal
+        $("#btnSave").click(function () {
+            var supplierFormData = $("#Categoryform").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/Category/Create",
+                data: supplierFormData,
+                success: function (data) {
+                    if (data == true) {
+                        window.location.href = "/Danh-sach-loai-san-pham";
+                    }
+                    else {
+                        alert("Error!! Không thể tạo loại mặt hàng này");
+                    }
+
+                }
+            })
+        })
+        //Xóa Category Modal
+        $("#btndeleteconfirm").click(function () {
+            var _id = $("#categoryId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Category/Delete",
+                data: { id: _id },
+                success: function (data) {
+                    if (data == true) {
+                        $("#deletecategoryModal").modal('hide');
+                        $("#categoryId").val(null);
+
+                        window.location.href = "/Danh-sach-loai-san-pham";
+                    }
+                    else {
+                        alert("Error!! Loại mặt hàng này không được xóa!");
+                    }
+                }
+            })
+        })
+        $("#import").click(function () {
+           var fd = new FormData();
+            fd.append('excelfile', $('#excelfile')[0].files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("import")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (_data) {
+
+                if (_data == true) {
+
+                    window.location.href = "/Danh-sach-loai-san-pham";
+                }
+                else {
+                    alert("Lỗi!! không thể thêm mặt hàng này !");
+                }
+
+
+            }
+
+        });
+        })
+
+    });
+    //show Xóa Category Modal
+    var confirm = function (id) {
+        $("#categoryId").val(id);
+        $("#deletecategoryModal").modal('show');
+
+    }
+    //show Edit Category Modal
+    var Editcategory = function (id) {
+        var url = "/Category/Edit/" + id;
+        $("#myModalBodyDiv1").load(url, function () {
+            $("#editcategory").modal("show");
+
+        })
+
+    }
+
+</script>
+
+@*@if (ViewBag.Message == null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                var message = "@ViewBag.Message";
+                $.notify(message, {
+                    type: 'success',
+                    icon: 'check',
+                    align: "center",
+                    verticalAlign: "top",
+                    animation: true,
+                    animationType: "drop",
+                    close: true
+                });
+            };
+    </script>
+}*@

@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLKModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="BillID" />
+    </Key>
+    <Property Name="BillID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="WarehouseID" Type="Int32" />
+    <Property Name="BillName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Warehouse" Relationship="Self.FK_Bill_Warehouse" FromRole="Bill" ToRole="Warehouse" />
+    <NavigationProperty Name="DetailBills" Relationship="Self.FK_DetailBill_Bill" FromRole="Bill" ToRole="DetailBill" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CategoryName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Category" FromRole="Category" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="DetailBill">
+    <Key>
+      <PropertyRef Name="DetailBillID" />
+    </Key>
+    <Property Name="DetailBillID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BillID" Type="Int32" />
+    <Property Name="ProductID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Unit" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Bill" Relationship="Self.FK_DetailBill_Bill" FromRole="DetailBill" ToRole="Bill" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_DetailBill_Product" FromRole="DetailBill" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Detailimportcoupon">
+    <Key>
+      <PropertyRef Name="DetailimportID" />
+    </Key>
+    <Property Name="DetailimportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ImportID" Type="Int32" />
+    <Property Name="Unit" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Location" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ProductID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Importcoupon" Relationship="Self.FK_Detailimportcoupon_Importcoupon" FromRole="Detailimportcoupon" ToRole="Importcoupon" />
+    <NavigationProperty Name="Product" Relationship="Self.FK_Detailimportcoupon_Product" FromRole="Detailimportcoupon" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="Importcoupon">
+    <Key>
+      <PropertyRef Name="ImportID" />
+    </Key>
+    <Property Name="ImportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Date" Type="DateTime" Precision="0" />
+    <Property Name="WarehouseID" Type="Int32" />
+    <Property Name="ImportName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Detailimportcoupons" Relationship="Self.FK_Detailimportcoupon_Importcoupon" FromRole="Importcoupon" ToRole="Detailimportcoupon" />
+    <NavigationProperty Name="Warehouse" Relationship="Self.FK_Importcoupon_Warehouse" FromRole="Importcoupon" ToRole="Warehouse" />
+  </EntityType>
+  <EntityType Name="Product">
+    <Key>
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="ProductID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CategoryID" Type="Int32" />
+    <Property Name="SupplierID" Type="Int32" />
+    <Property Name="ProductName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Unit" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Photo" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Category" Relationship="Self.FK_Product_Category" FromRole="Product" ToRole="Category" />
+    <NavigationProperty Name="DetailBills" Relationship="Self.FK_DetailBill_Product" FromRole="Product" ToRole="DetailBill" />
+    <NavigationProperty Name="Detailimportcoupons" Relationship="Self.FK_Detailimportcoupon_Product" FromRole="Product" ToRole="Detailimportcoupon" />
+    <NavigationProperty Name="Supplier" Relationship="Self.FK_Product_Supplier" FromRole="Product" ToRole="Supplier" />
+  </EntityType>
+  <EntityType Name="Supplier">
+    <Key>
+      <PropertyRef Name="SupplierID" />
+    </Key>
+    <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SupplierName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ContactName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Adderss" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Zipcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Products" Relationship="Self.FK_Product_Supplier" FromRole="Supplier" ToRole="Product" />
+  </EntityType>
+  <EntityType Name="SystemDatabase">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Uploadfile">
+    <Key>
+      <PropertyRef Name="IDPath" />
+    </Key>
+    <Property Name="IDPath" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Path" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="UploadPhotoBill">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IdBill" Type="Int32" />
+    <Property Name="Path" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="UploadPhotoProduct">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IDProduct" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Path" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Warehouse">
+    <Key>
+      <PropertyRef Name="WarehouseID" />
+    </Key>
+    <Property Name="WarehouseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="WarehouseName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Soluong" Type="Double" />
+    <NavigationProperty Name="Bills" Relationship="Self.FK_Bill_Warehouse" FromRole="Warehouse" ToRole="Bill" />
+    <NavigationProperty Name="Importcoupons" Relationship="Self.FK_Importcoupon_Warehouse" FromRole="Warehouse" ToRole="Importcoupon" />
+  </EntityType>
+  <Association Name="FK_Bill_Warehouse">
+    <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouse">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailBill_Bill">
+    <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+    <End Role="DetailBill" Type="Self.DetailBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill">
+        <PropertyRef Name="BillID" />
+      </Principal>
+      <Dependent Role="DetailBill">
+        <PropertyRef Name="BillID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Category">
+    <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DetailBill_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="DetailBill" Type="Self.DetailBill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="DetailBill">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Detailimportcoupon_Importcoupon">
+    <End Role="Importcoupon" Type="Self.Importcoupon" Multiplicity="0..1" />
+    <End Role="Detailimportcoupon" Type="Self.Detailimportcoupon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Importcoupon">
+        <PropertyRef Name="ImportID" />
+      </Principal>
+      <Dependent Role="Detailimportcoupon">
+        <PropertyRef Name="ImportID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Detailimportcoupon_Product">
+    <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+    <End Role="Detailimportcoupon" Type="Self.Detailimportcoupon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Product">
+        <PropertyRef Name="ProductID" />
+      </Principal>
+      <Dependent Role="Detailimportcoupon">
+        <PropertyRef Name="ProductID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Importcoupon_Warehouse">
+    <End Role="Warehouse" Type="Self.Warehouse" Multiplicity="0..1" />
+    <End Role="Importcoupon" Type="Self.Importcoupon" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Warehouse">
+        <PropertyRef Name="WarehouseID" />
+      </Principal>
+      <Dependent Role="Importcoupon">
+        <PropertyRef Name="WarehouseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Product_Supplier">
+    <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+    <End Role="Product" Type="Self.Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Supplier">
+        <PropertyRef Name="SupplierID" />
+      </Principal>
+      <Dependent Role="Product">
+        <PropertyRef Name="SupplierID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLKEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bills" EntityType="Self.Bill" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="DetailBills" EntityType="Self.DetailBill" />
+    <EntitySet Name="Detailimportcoupons" EntityType="Self.Detailimportcoupon" />
+    <EntitySet Name="Importcoupons" EntityType="Self.Importcoupon" />
+    <EntitySet Name="Products" EntityType="Self.Product" />
+    <EntitySet Name="Suppliers" EntityType="Self.Supplier" />
+    <EntitySet Name="SystemDatabases" EntityType="Self.SystemDatabase" />
+    <EntitySet Name="Uploadfiles" EntityType="Self.Uploadfile" />
+    <EntitySet Name="UploadPhotoBills" EntityType="Self.UploadPhotoBill" />
+    <EntitySet Name="UploadPhotoProducts" EntityType="Self.UploadPhotoProduct" />
+    <EntitySet Name="Warehouses" EntityType="Self.Warehouse" />
+    <AssociationSet Name="FK_Bill_Warehouse" Association="Self.FK_Bill_Warehouse">
+      <End Role="Warehouse" EntitySet="Warehouses" />
+      <End Role="Bill" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailBill_Bill" Association="Self.FK_DetailBill_Bill">
+      <End Role="Bill" EntitySet="Bills" />
+      <End Role="DetailBill" EntitySet="DetailBills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Category" Association="Self.FK_Product_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DetailBill_Product" Association="Self.FK_DetailBill_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="DetailBill" EntitySet="DetailBills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Detailimportcoupon_Importcoupon" Association="Self.FK_Detailimportcoupon_Importcoupon">
+      <End Role="Importcoupon" EntitySet="Importcoupons" />
+      <End Role="Detailimportcoupon" EntitySet="Detailimportcoupons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Detailimportcoupon_Product" Association="Self.FK_Detailimportcoupon_Product">
+      <End Role="Product" EntitySet="Products" />
+      <End Role="Detailimportcoupon" EntitySet="Detailimportcoupons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Importcoupon_Warehouse" Association="Self.FK_Importcoupon_Warehouse">
+      <End Role="Warehouse" EntitySet="Warehouses" />
+      <End Role="Importcoupon" EntitySet="Importcoupons" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Product_Supplier" Association="Self.FK_Product_Supplier">
+      <End Role="Supplier" EntitySet="Suppliers" />
+      <End Role="Product" EntitySet="Products" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

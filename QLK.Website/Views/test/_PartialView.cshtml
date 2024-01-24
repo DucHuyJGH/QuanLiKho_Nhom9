@@ -1,0 +1,11 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.Category>
+@{
+    Layout = null;
+}
+
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("getpaging", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "category_area" }))
+</div>

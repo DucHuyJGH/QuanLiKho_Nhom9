@@ -1,0 +1,224 @@
+﻿@*@model IEnumerable<QLK.Website.Model.ExInput>*@
+@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.ExInput>
+
+@{
+    ViewBag.Title = "Báo cáo nhập hàng";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            @using (Html.BeginForm("Export", "ExInput", FormMethod.Post))
+                            {
+                                <div>
+                                    <button class="btn btn-success">Xuất Excel</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="text-right">
+                            @using (Html.BeginForm("Index", "ExInput", FormMethod.Get))
+                            {<div class="row">
+                                    @*<div class="col-lg-4">
+
+                                        <div class='input-group date' id='datetimepicker6'>
+                                            <input type='text' name="datein" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class='input-group date' id='datetimepicker7'>
+                                            <input type='text' name="dateout" class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+
+                                    </div>*@
+                                 <div class="col-lg-4">
+                                     <input type="hidden" id="datein" name="datein" />
+                                     <input type="hidden" id="dateout" name="dateout" />
+                                     <input type="text" name="datefilter" value="@ViewBag.datenow - @ViewBag.datenow" class="form-control text-center" />
+                                 </div>
+                                    <div class="col-lg-6">
+                                       
+                                            <div class="col-lg-9 ">
+                                                <input type="text" class="form-control" name="SearchString" />
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+                                            </div>
+
+                                    </div>
+                                </div>
+
+
+
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center">
+                                            Ảnh
+                                        </th>
+                                        <th style="text-align: center">
+                                            Mã chi tiết phiếu nhập
+                                        </th>
+                                     
+                                        <th style="text-align: center">
+                                            Ngày nhập
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên mặt hàng
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên loại mặt hàng
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên nhà cung cấp
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn vị tính
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn giá
+                                        </th>
+                                        <th style="text-align: center">
+                                            Số lượng
+                                        </th>
+                                        <th style="text-align: center">
+                                            Thành tiền
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @foreach (var ite in ViewBag.UploadPhotoProcut)
+                                            {
+                                                if (ite.IDProduct == item.ProductID)
+                                                {
+                                                    <img src="@Url.Content(ite.Path)" style="height:50px;width:50px">
+                                                }
+
+
+                                            }
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DetailsImport)
+                                        </td>
+                                        
+        
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Date)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ProductName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CategoryName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.SupplierName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Unit)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Price) đ
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.QuantityIm)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Tolalpricein) đ
+                                        </td>
+                                    </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="color:red;">
+    <p>
+        Tổng có @ViewBag.dem phiếu nhập
+    </p>
+    <p>
+        Tổng số lượng nhập: @ViewBag.sl
+    </p>
+</div>
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, datein = ViewBag.datein, dateout = ViewBag.dateout }))
+</div>
+
+<script>
+    $(function () {
+
+        var date = '1-30-2021';
+        var dateNow = new Date();
+        $('#datetimepicker6').datetimepicker({
+            defaultDate: date,
+           /*format: 'DD/MM/YYYY',*/
+        });
+
+
+        $('#datetimepicker7').datetimepicker({
+            defaultDate: dateNow,
+         /*  format: 'DD/MM/YYYY',*/
+            useCurrent: false
+        });
+        $("#datetimepicker6").on("dp.change", function (e) {
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+    $(function () {
+
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            //alert('â');
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + '-' + picker.endDate.format('MM/DD/YYYY'));
+            $("#datein").val(picker.startDate.format('MM/DD/YYYY'));
+            $("#dateout").val(picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+    });
+</script>

@@ -1,0 +1,76 @@
+﻿@*@model QLK.Website.Model.Detailimportcoupon*@
+@model IEnumerable<QLK.Website.Model.Detailimportcoupon>
+
+    @{
+        Layout = null;
+    }
+    <div class="box box-primary">
+        <form id="myForm">
+            <table class="table table-bordered table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">
+                            Mã hóa đơn
+                        </th>
+                        <th style="text-align: center">
+                            Mã chi tiết hóa đơn
+                        </th>
+
+                        <th style="text-align: center">
+                            Mã hàng
+                        </th>
+                        <th style="text-align: center">
+                            Tên mặt hàng
+                        </th>
+                        <th style="text-align: center">
+                            Ngày nhập
+                        </th>
+                        <th style="text-align: center">
+                            đơn giá
+                        </th>
+                        <th style="text-align: center">
+                            số lượng
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ImportID)
+                                @*@item.ImportID*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DetailimportID)
+                                @*@item.DetailimportID*@
+
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductID)
+                                @*@item.ProductID*@
+                            </td>
+
+                            <td>
+                                @*@item.Product.ProductName*@
+                                @Html.DisplayFor(modelItem => item.Product.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Importcoupon.Date)
+                                @*@Model.Date*@
+                            </td>
+                            <td>
+                                @*@item.Unit*@
+                                @Html.DisplayFor(modelItem => item.Unit)
+                            </td>
+                            <td>
+                                @*@item.Quantity*@
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>

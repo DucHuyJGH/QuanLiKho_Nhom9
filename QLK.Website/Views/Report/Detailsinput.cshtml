@@ -1,0 +1,64 @@
+﻿@model IEnumerable<QLK.Website.Model.Detailimportcoupon>
+
+<div class="box box-primary">
+
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            <th>
+                Mã hóa đơn
+            </th>
+            <th>
+                Mã chi tiết hóa đơn
+            </th>
+
+            <th>
+                Mã hàng
+            </th>
+            <th>
+                Tên mặt hàng
+            </th>
+            <th>
+                Ngày nhập
+            </th>
+            <th>
+                đơn giá
+            </th>
+            <th>
+                số lượng
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ImportID
+                </td>
+                <td>
+                    @item.DetailimportID
+
+                </td>
+
+                <td>
+                    @item.ProductID
+                </td>
+
+                <td>
+                    @item.Product.ProductName
+                </td>
+             
+                <td>
+                    @item.Unit
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+             
+            </tr>
+        }
+    </table>
+</div>
+
+
+

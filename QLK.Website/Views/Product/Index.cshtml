@@ -1,0 +1,525 @@
+﻿@*@model QLK.Website.Model.Product*@
+@model PagedList.IPagedList<QLK.Website.Model.Product>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Danh sách hàng hóa";
+}
+
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-1">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#proForm"> <i class="fa fa-plus"></i>Thêm mới</a>
+                            @*<a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        @using (Html.BeginForm("import", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <a class="btn btn-success" data-toggle="modal" data-target="#formimortpro"><i class="fa fa-plus"></i>Import</a>
+                            <div class="modal fade" id="formimortpro" role="dialog">
+                                <div class="modal-dialog" style="width:1000px;">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h1 class="modal-title text-center">Thêm mặt hàng</h1>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <h5>Format excel</h5>
+                                                <table class="table table-bordered table-hover table-striped">
+                                                    <thead>
+                                                        <tr style="color:darkgray;">
+                                                            <th style="text-align: center">
+                                                                Mã mặt hàng
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Mã loại mặt hàng
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Tên mặt hàng
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Đơn vị tính
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Đơn giá
+                                                            </th>
+                                                            <th style="text-align: center">
+                                                                Nhà cung cấp
+                                                            </th>
+                                                          
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>KF001</td>
+                                                            <td>1072</td>
+                                                            <td>tên mặt hàng</td>
+                                                            <td>Lít</td>
+                                                            <td>20000</td>
+                                                            <td>1030</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                Chú ý: - Import từ dòng thứ 2 trở đi.
+                                            </div>
+                                            <input name="exfile" type="file" id="exfile" />
+                                        </div>
+                                        <br />
+                                        <div class="modal-footer">
+                                            <a href="#" id="importpro" class="btn btn-primary">Thêm</a>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-right">
+                            @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+                            {
+                                <div class="col-lg-6">
+                                    <input type="text" class="form-control" name="SearchString" id="SearchString" />
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            @*<div class="box box-success">*@
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center">
+                                            Ảnh
+                                            @*@Html.DisplayNameFor(model => model.Photo)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Mã mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.ProductID)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Loại mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.Category.CategoryName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.ProductName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn vị tính
+                                            @*@Html.DisplayNameFor(model => model.Unit)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn giá
+                                            @*@Html.DisplayNameFor(model => model.Unit)*@
+                                        </th>
+
+                                        <th style="text-align: center">
+                                            Nhà cung cấp
+                                            @*@Html.DisplayNameFor(model => model.Supplier.SupplierName)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tác vụ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td align="center">
+                                            @foreach (var ite in ViewBag.UploadPhotoProcut)
+                                            {
+                                                if (ite.IDProduct == item.ProductID)
+                                                {
+                                                    <img src="@Url.Content(ite.Path)" style="height:50px;width:50px">
+                                                }
+
+
+                                            }
+                                            @*<img src="@Url.Content(item.Photo)" style="height:50px;width:50px">*@
+
+
+                                            @*<img src="@Html.DisplayFor(modelItem => item.Photo)" style="height:50px;width:50px" />*@
+                                        </td>
+                                        <td>
+                                            @item.ProductID
+                                            @*@Html.DisplayFor(modelItem => item.ProductID)*@
+                                        </td>
+                                        <td>
+                                            @item.Category.CategoryName
+                                            @*@Html.DisplayFor(modelItem => item.Category.CategoryName)*@
+                                        </td>
+                                        <td>
+                                            @item.ProductName
+                                            @*@Html.DisplayFor(modelItem => item.ProductName)*@
+                                        </td>
+                                        <td>
+                                            @item.Unit
+                                            @*@Html.DisplayFor(modelItem => item.Unit)*@
+                                        </td>
+                                        <td>
+                                            @item.Price
+                                        </td>
+
+                                        <td>
+                                            @item.Supplier.SupplierName
+                                            @*@Html.DisplayFor(modelItem => item.Supplier.SupplierName)*@
+
+                                        </td>
+
+                                        <td align="center">
+                                            @*<a href="@Url.Action("Edit", new { id = item.ProductID })" class="btn btn-success"><i class="fa fa-pencil"></i></a>*@
+                                            <a href="#" class="btn btn-success" onclick="return EditProduct('@item.ProductID')"><i class="fa fa-pencil"></i> </a>
+                                            <a href="#" class="btn btn-danger" id="showModal" onclick="return confirm('@item.ProductID')"><i class="fa fa-trash"></i></a>
+                                            @*<a onclick="return confirm('Bạn muôn xóa không??')" class="btn btn-danger" href="@Url.Action("Delete", new { id = item.ProductID })"><i class="fa fa-trash"></i></a>*@
+
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            @*</div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+
+<div class="modal fade" id="proForm" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title text-center">Thêm mặt hàng</h1>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <!-- source code-->
+                    @*@using (Html.BeginForm("Create", "Product", FormMethod.Post,
+                                               new { enctype = "multipart/form-data" }))
+                        {*@
+                    <div class="form-groups">
+                        <label>Tên loại mặt hàng</label>
+                        @Html.DropDownList("CategoryID", new SelectList(ViewBag.Category, "CategoryID", "CategoryName"), new { @class = "form-control", required = "required" })
+                    </div>
+                    <div class="form-group">
+                        <label>Mã mặt hàng</label>
+                        <input type="text" name="ProductID" id="ProductID" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Tên nhà cung cấp</label>
+                        @Html.DropDownList("SupplierID", new SelectList(ViewBag.Supplier, "SupplierID", "SupplierName"), new { @class = "form-control", required = "required" })
+                       
+                    </div>
+                    <div class="form-group">
+                        <label>Tên mặt hàng</label>
+                        <input type="text" name="ProductName" id="ProductName" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn vị tính</label>
+                      
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <input type="text" name="Unit" id="Unit" class="form-control" required />
+                            </div>
+                            <div class="col-lg-4">
+                                @Html.DropDownList("unit", new SelectList(ViewBag.unit, "Unit", "Unit"), new { @class = "form-control", required = "required", onchange = "run()" })
+                              
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Đơn giá</label>
+                        <input type="number" name="Price" id="Price" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Ảnh</label>
+
+                        @*@Html.TextBox("Photo")*@
+                        <input type="File" name="file" id="file" multiple accept="image/*" style="width:100%;" />
+                        <img id="pictureUpload" />
+                        @*<input type="file" name="fileUpload" id="fileUpload" required />*@
+                    </div>
+
+                    @*}*@
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnCreate" class="btn btn-primary" value="Lưu">
+                    @*<a href="#" id="btnSave" class="btn btn-primary">Save</a>*@
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<div class="modal fade" id="editproduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa  mặt hàng</h3>
+            </div>
+            <div class="modal-body" id="myModalBodyDiv2">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="deleteproduct">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteconfirm" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="productid" />
+
+
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+<script>
+
+$(document).ready(function () {
+        //$("#btnSave").click(function () {
+        //  var supplierFormData = $("#productrform").serialize();
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Product/Create",
+        //        data: supplierFormData,
+        //        success: function (data) {
+        //            if (data == true) {
+        //                window.location.href = "/Danh-sach-san-pham";
+        //            }
+        //            else {
+        //                alert("Lỗi!! không thể thêm mặt hàng này !");
+        //            }
+        //        }
+        //    })
+        //})
+
+    $('#btnCreate').click(function () {
+        var fd = new FormData();
+
+      /*  fd.append('file', $('#file')[0].files[0]);*/
+        $.each($("input[name='file']")[0].files, function (i, file) {
+            fd.append('file', file);
+        });
+        fd.append('CategoryID', $('#CategoryID').val());
+        fd.append('ProductID', $('#ProductID').val());
+        fd.append('SupplierID', $('#SupplierID').val());
+        fd.append('ProductName', $('#ProductName').val());
+        fd.append('Price', $('#Price').val());
+        fd.append('Unit', $('#Unit').val());
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (_data) {
+
+                if (_data.status == true) {
+
+                    window.location.href = "/Danh-sach-san-pham";
+                }
+                else {
+                    alert("Lỗi!! không thể thêm mặt hàng này !");
+                }
+
+
+            }
+
+        });
+    });
+
+    $('#importpro').click(function () {
+        var fd = new FormData();
+        fd.append('exfile', $('#exfile')[0].files[0]);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("import")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (_data) {
+
+                if (_data == true) {
+
+                    window.location.href = "/Danh-sach-san-pham";
+                }
+                else {
+                    alert("Lỗi!! không thể import file này !");
+                }
+
+
+            }
+
+        });
+    });
+
+    $("#btnCancel").click(function () {
+        window.location.href = "/Danh-sach-san-pham";
+    })
+    $("#btnCancelconfirm").click(function () {
+        window.location.href = "/Danh-sach-san-pham";
+    })
+    $("#btndeleteconfirm").click(function () {
+        var _id = $("#productid").val();
+        $.ajax({
+            type: "POST",
+            url: "/Product/Delete",
+            data: { id: _id },
+            success: function (data) {
+                if (data == true) {
+                    $("#deleteproduct").modal('hide');
+                    $("#productid").val(null);
+
+                    window.location.href = "/Danh-sach-san-pham";
+                }
+                else {
+                    alert("Error!! mặt hàng này không được xóa!");
+                }
+            }
+
+        })
+    })
+ });
+
+    function confirm(id)
+    /*var confirm = function (id) */{
+        $("#productid").val(id);
+        $("#deleteproduct").modal('show');
+
+    }
+    function EditProduct(id)
+   /* var EditProduct = function (id)*/ {
+        var url = "/Product/Edit/" + id;
+        $("#myModalBodyDiv2").load(url, function () {
+            $("#editproduct").modal("show");
+
+        })
+
+    }
+
+    function run() {
+        var select = document.getElementById('unit');
+        var option = select.options[select.selectedIndex];
+
+        document.getElementById('Unit').value = option.value;
+
+    }
+
+
+
+    //$('#btnCreate').click(function () {
+    //    //$('#productrform').submit(function () {
+    //    var productFormData;
+    //    productFormData = new FormData();
+    //    //productFormData.append('CategoryID','CategoryID');
+    //    //productFormData.append('ProductID','ProductID');
+    //    //productFormData.append('SupplierID','SupplierID');
+    //    //productFormData.append('ProductName','ProductName');
+    //    //productFormData.append('Unit','Unit');
+    //    productFormData.append('file', $('#file')[0].files[0]);
+    //    /* xhr = new XMLHttpRequest();*/
+    //    $.ajax({
+    //        type: "POST",
+    //       url: "/Product/Create",
+    //       data: productFormData,
+    //        contentType: false,
+    //        processData: false,
+    //        success: function (data) {
+    //            //alert(data);
+    //            //return;
+    //            if (data == true) {
+    //                window.location.href = "/Danh-sach-san-pham";
+    //            }
+    //            else {
+    //               alert("Error!! Không thể thêm mặt hàng này!");
+    //            }
+    //        },
+
+    //    })
+
+    // });
+
+    //var max_fields = 2; //maximum input boxes allowed
+    //var wrapper = $(".input_fields_wrap"); //Fields wrapper
+    //var add_button = $(".add_field_button"); //Add button ID
+
+    //var x = 1; //initlal text box count
+
+
+    //$(add_button).click(function (e) { //on add input button click
+    //    e.preventDefault();
+    //    if (x < max_fields) { //max input box allowed
+
+    //        //text box increment
+    //        $(wrapper).append('<div class="col-lg-4"><br/><input type="text" class="form-control " name="mytext"/><a href="#" class="btn btn-success">add</a><a href="#" class="btn btn-danger">xóa</a></div>'); //add input box
+    //        x++;
+    //    }
+    //});
+
+    //$(wrapper).on("click", ".btn-danger", function (e) {
+
+    //    e.preventDefault();
+    //    $(this).parent('div').remove();
+    //    x--;
+    //})
+
+</script>
+

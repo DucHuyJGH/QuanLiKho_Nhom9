@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "";
+}
+@using (Html.BeginForm("history", "Home", FormMethod.Get))
+{
+    <div class="row">
+        <div class="">
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-2">
+                <input type="hidden" name="datein" id="datein" />
+                <input type="hidden" name="dateout" id="dateout" />
+                <input type="text" name="datefilter" value="@ViewBag.now- @ViewBag.datenow" class="form-control text-center" />
+            </div>
+            <div class="col-lg-2">
+                <input type="submit" value="Tìm kiếm" class="btn btn-warning" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row" id="index_input">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <!-- Form Element sizes -->
+                    <div class="box box-success">
+
+                        <div class="box-header with-border">
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3 class="box-title"> Nhập xuất kho</h3>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart">
+                                <section class="connectedSortable">
+                                    <!-- Custom tabs (Charts with tabs)-->
+                                    <div class="nav-tabs-custom">
+                                        @*<ul class="nav nav-tabs pull-right">
+                                                <li class="pull-left header">
+                                                    <i class="fa fa-inbox"></i> Nhập xuất kho
+                                                </li>
+                                                <li>
+
+                                                </li>
+                                            </ul>*@
+
+                                        <div class="tab-content no-padding">
+                                            <div id="revenue-chart" style="position: relative; height: auto; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                                <canvas id="bar_chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="row" id="index_input">
+                <!-- left column -->
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <!-- Form Element sizes -->
+                    <div class="box box-success">
+
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h3 class="box-title"> Tổng giá nhập xuất kho</h3>
+                                </div>
+                                <div class="col-lg-4">
+                                    @*<input type="hidden" name="datein1" id="datein1" />
+                                        <input type="hidden" name="dateout1" id="dateout1" />
+                                        <input type="text" name="datefilter1" value="@ViewBag.now- @ViewBag.datenow" class="form-control text-center" />*@
+                                </div>
+                                <div class="col-lg-2">
+                                    @*<input type="submit" value="Tìm kiếm" class="btn btn-warning" />*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <div class="chart">
+
+
+                                <section class="connectedSortable">
+                                    <!-- Custom tabs (Charts with tabs)-->
+                                    <div class="nav-tabs-custom">
+                                        <div class="tab-content no-padding">
+                                            <div id="revenue-chart" style="position: relative; height: auto; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
+                                                <canvas id="bar_chart1"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+}
+<script>
+    var repArray = @Html.Raw(Json.Encode(ViewBag.rep));
+    var datetime = @Html.Raw(ViewBag.datetime);
+    var repArray1 = @Html.Raw(Json.Encode(ViewBag.rep1));
+      var repArray2 = @Html.Raw(Json.Encode(ViewBag.r2));
+        var repArray3 = @Html.Raw(Json.Encode(ViewBag.r3));
+        var repArray4 = @Html.Raw(Json.Encode(ViewBag.r4));
+     @*var datetime1 = @Html.Raw(ViewBag.datetime1);*@
+
+    var ctx = $("#bar_chart");
+    var barChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: datetime,
+            datasets: [
+                {
+                    label: "Nhập",
+                    /* data: [46,3,54,7,87,45,234,6,76,65,2,4,6,8,32,34] ,*/
+                    data: repArray,
+                    backgroundColor: "#CFCFCF",
+                },
+                {
+                    label: "Xuất",
+                    data: repArray1,
+                    backgroundColor: "#008B45",
+                }
+
+            ],
+
+
+        },
+
+
+    });
+        var ctx1 = $("#bar_chart1");
+        var barChart1 = new Chart(ctx1, {
+            type: "bar",
+            data: {
+                labels: datetime,
+                datasets: [
+                    {
+                        label: "Tổng giá vốn",
+                        data: repArray2,
+                        backgroundColor: "orange",
+                    },
+                    {
+                        label: "Tổng giá bán",
+                        data: repArray3,
+                        backgroundColor: "mediumblue",
+                    },
+                    {
+                        label: "Lãi/lỗ",
+                        data: repArray4,
+                        backgroundColor: "forestgreen",
+                    },
+                   
+                ],
+
+
+            },
+        });
+
+    $(function () {
+
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            //alert('â');
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + '-' + picker.endDate.format('MM/DD/YYYY'));
+            $("#datein").val(picker.startDate.format('MM/DD/YYYY'));
+            $("#dateout").val(picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
+    });
+
+
+</script>
+
+

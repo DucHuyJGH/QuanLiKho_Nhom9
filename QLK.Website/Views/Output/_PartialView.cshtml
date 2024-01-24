@@ -1,0 +1,517 @@
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<QLK.Website.Model.DetailBill>
+@{
+    ViewBag.Title = "";
+
+}
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-12">
+        <!-- general form elements -->
+        <!-- Form Element sizes -->
+        <div class="box box-warning">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Title</h3>
+            
+                <h5 class="text-center">Mã phiếu xuất : @ViewBag._id</h5>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target="#detailform"> <i class="fa fa-plus"></i>Thêm mới</a>
+                                </div>
+                                <div class="col-lg-4">
+                                    <a href="#" class="btn btn-warning" onclick="return deleteSession()" >Tất cả</a>
+                                </div>
+                            </div>
+                            @*<a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus"></i> Thêm mới</a>*@
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                            @*<input type="hidden" id="datein" name="datein" />
+                            <input type="hidden" id="dateout" name="dateout" />
+                            <input type="text" name="datefilter" value="@ViewBag.datenow- @ViewBag.datenow" class="form-control text-center" />*@
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-right">
+                            <div class="col-lg-8">
+                                <input type="text" id="searchid" class="form-control" />
+                            </div>
+                            <div class="col-lg-3">
+                                <input type="submit" value="Tìm kiếm" onclick="return fromsearch()" class="btn btn-warning" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th>
+                                            Mã chi tiết phiếu xuất
+
+                                        </th>
+                                        <th style="text-align: center">
+                                            Mã phiếu xuất
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tên phiếu xuất
+                                        </th>
+
+                                        <th style="text-align: center">
+                                            Tên mặt hàng
+                                            @*@Html.DisplayNameFor(model => model.Quantity)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                            Ngày xuất
+                                        </th>
+                                        <th style="text-align: center">
+                                            Đơn vị tính
+                                            @*@Html.DisplayNameFor(model => model.Bill.BillID)*@
+                                        </th>
+                                        <th style="text-align: center">
+                                           Đơn giá
+                                        </th>
+                                        <th style="text-align: center">
+                                            Số lượng
+                                        </th>
+                                        <th>
+                                            Ghi chú
+                                        </th>
+                                        <th style="text-align: center">
+                                            Tác vụ
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @item.DetailBillID
+                                        </td>
+                                        <td>
+                                            @item.BillID
+                                        </td>
+                                        <td>
+                                            @item.Bill.BillName
+                                            @*@Html.DisplayFor(modelItem => item.Bill.BillID)*@
+                                        </td>
+
+                                        <td>
+                                            @item.Product.ProductName
+                                            @*@Html.DisplayFor(modelItem => item.Product.ProductName)*@
+                                        </td>
+                                        <td>
+                                            @*@item.Bill.Date*@
+                                            @Html.DisplayFor(modelItem => item.Bill.Date)
+                                        </td>
+
+                                        <td>
+                                            @item.Unit
+                                            @*@Html.DisplayFor(modelItem => item.Unit)*@
+                                        </td>
+                                        <td>
+                                            @item.Price
+                                        </td>
+                                        <td>
+                                            @item.Quantity
+                                            @*@Html.DisplayFor(modelItem => item.Quantity)*@
+                                        </td>
+                                        <td>
+                                            @item.Note
+
+                                        </td>
+
+                                        <td style="text-align: center">
+                                            <a href="#" class="btn btn-success" onclick="Editdetailoutput(@item.DetailBillID)"><i class="fa fa-pencil"></i> </a>
+                                            <a href="#" class="btn btn-danger" id="showModal" onkeypress="if(event.key === 'Enter')" onclick="confirm2(@item.DetailBillID)"><i class="fa fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="modal fade" id="detailform" role="dialog">
+    <div class="modal-dialog">-->
+        <!-- Modal content-->
+        <!--<div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title text-center">Thêm chi tiết phiếu xuất</h1>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Mã phiếu xuất</label>
+                        <input type="text" name="BillID" value="@ViewBag._id" id="BillID" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Mã mặt hàng</label>
+                        Html.DropDownList("ProductID", new SelectList(ViewBag.product, "ProductID", "ProductName"), new { class = "form-control", required = "required" })
+                    </div>
+               
+                    <div class="form-group">
+                        <label>Đơn vị tính</label>
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <input type="text" name="Unit" id="Unit" class="form-control" required />
+                            </div>
+                            <div class="col-lg-4">
+                             
+                                 Html.DropDownList("unit", new SelectList(ViewBag.unit, "Unit", "Unit"), new { class = "form-control", required = "required", onchange = "run()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Đơn giá</label>
+                        <input type="number" name="Price" id="Price" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number" name="Quantity" id="Quantity" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <input type="text" name="Note" id="Note" class="form-control" required />
+                    </div>
+                </div>
+             
+                <div class="modal-footer">
+                    <input type="button" id="btnSaveDetailoutput" class="btn btn-primary" value="Lưu">
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+
+
+<div class="modal fade" id="detailform" role="dialog">
+    <div class="modal-dialog" style="width:1250px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h1 class="modal-title text-center">Thêm chi tiết phiếu xuất</h1>
+            </div>
+            <form action="" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-1 form-data-output">
+                            <label>Mã PX</label>
+                            <input type="text" name="BillID[]" value="@ViewBag._id" id="BillID" class="form-control" required />
+                        </div>
+                        <div class="col-lg-2 form-data-output1">
+                            <label>Mã mặt hàng</label>
+                            <select class="form-control" name="ProductID[]" id="ProductID">
+                                @foreach (var item in ViewBag.product)
+                                {
+                                    <option value="@item.ProductID">@item.ProductName</option>
+                                }
+                            </select>
+                            @*@Html.DropDownList("ProductID", new SelectList(ViewBag.product, "ProductID", "ProductName"), new { @class = "form-control", required = "required" })*@
+                        </div>
+                        <div class="col-lg-2 form-data-output2">
+                            <label>Đơn vị tính</label>
+                            <select class="form-control" name="unit[]" id="unit">
+                                @foreach (var item in ViewBag.unit)
+                                {
+                                    <option>@item.unit</option>
+                                }
+                            </select>
+                            @*@Html.DropDownList("unit", new SelectList(ViewBag.unit, "Unit", "Unit"), new { @class = "form-control", required = "required"})*@
+                        </div>
+                        <div class="col-lg-2 form-data-output3">
+                            <label>Đơn giá</label>
+                            <input type="number" name="Price[]" id="Price" class="form-control" required />
+                        </div>
+                        <div class="col-lg-1 form-data-output4">
+                            <label>Số lượng</label>
+                            <input type="number" name="Quantity[]" id="Quantity" class="form-control" required />
+                        </div>
+                        <div class="col-lg-3 form-data-output5">
+                            <label>Ghi chú</label>
+                            <input type="text" name="Note[]" id="Note" class="form-control" required />
+                        </div>
+                        <div class="col-lg-1">
+                            <label></label>
+                            <div style="margin:5px;">
+                                <a href="#" id="addRow1" class="btn btn-success"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                <div id="newRow1" >
+                    @*//content*@
+                </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" id="btnSaveDetailoutput" class="btn btn-primary" value="Lưu">
+
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editdetailoutputModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h3 class="modal-title text-center">Chỉnh sửa chi tiết phiếu xuất</h3>
+            </div>
+            <div class="modal-body" id="editdetailOutput">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="deletedetailOutputModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-center">Thông báo</h3>
+            </div>
+            <div class="modal-body">
+                Bạn có thật sự muốn xóa nó không ??
+            </div>
+            <div class="modal-footer">
+                <a href="#" id="btndeleteoutputModal" class="btn btn-primary">Xóa</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Trở lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="detailoutputId" />
+
+<div class="text-center">
+    Trang @(Model.PageCount < Model.PageNumber ? 0: Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("getpaging", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "output_area" }))
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#btnSaveDetailoutput').click(function () {
+            @*var fd = new FormData();
+            fd.append('BillID', $('#BillID').val());
+            fd.append('ProductID', $('#ProductID').val());
+            fd.append('Unit', $('#Unit').val());
+            fd.append('Note', $('#Note').val());
+            fd.append('Price', $('#Price').val());
+            fd.append('Quantity', $('#Quantity').val());
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Create1", "DetailOutput")',
+            data: fd,
+            processData: false,
+            contentType:false,
+            success: function (data) {
+                //alert(data);
+                //return;
+                if (data == true) {
+                    window.location.href = "/Danh-sach-phieu-xuat";
+                }
+                else {
+                    alert("Lỗi!! không thể thêm chi tiết phiếu xuất này !");
+                }
+
+                //$('#data').empty();
+                //$('#data').append(data);
+
+            }
+
+        });*@
+
+        var imputdetail = new Array();
+        var fd = new FormData();
+        var billID = new Array();
+        $('.form-data-output').each(function (i) {
+            var BillID = $(this).find('#BillID').val();
+            billID.push(BillID);
+        })
+        var productID = new Array();
+        $('.form-data-output1').each(function (i) {
+            var ProductID = $(this).find('#ProductID').val();
+            productID.push(ProductID);
+        })
+        var unit = new Array();
+        $('.form-data-output2').each(function (i) {
+            var unit1 = $(this).find('#unit').val();
+            unit.push(unit1);
+        })
+        var price = new Array();
+        $('.form-data-output3').each(function (i) {
+            var Price = $(this).find('#Price').val();
+            price.push(Price);
+        })
+        var quantity = new Array();
+        $('.form-data-output4').each(function (i) {
+            var Quantity = $(this).find('#Quantity').val();
+            quantity.push(Quantity);
+        })
+        var note = new Array();
+        $('.form-data-output5').each(function (i) {
+            var Note = $(this).find('#Note').val();
+            note.push(Note);
+        })
+        fd.append('BillID', billID);
+        fd.append('ProductID', productID);
+        fd.append('Unit', unit);
+        fd.append('Price', price);
+        fd.append('Quantity', quantity);
+        fd.append('Note', note);
+        $.ajax({
+               type: 'POST',
+               url: '@Url.Action("Create1", "DetailOutput")',
+               data: fd,
+               processData: false,
+               contentType: false,
+               traditional: true,
+               success: function (data) {
+                   if (data == true) {
+                       window.location.href = "/Danh-sach-phieu-xuat";
+                   }
+                   else {
+                       alert("Lỗi!! không thể thêm chi tiết phiếu xuất này !");
+                   }
+
+               }
+           });
+    });
+      $("#btndeleteoutputModal").click(function () {
+          var _id = $("#detailoutputId").val();
+          $.ajax({
+              type: "POST",
+              url: "/DetailOutput/Delete",
+              data: { id: _id },
+              success: function (data) {
+                  if (data == true) {
+                      $("#deletedetailimportPartial").modal('hide');
+                      $("#detailoutputId").val(null);
+                      window.location.href = "/Danh-sach-phieu-xuat";
+                  }
+                  else {
+                      alert("Error!! phiếu nhập này không được xóa!");
+                  }
+              }
+
+          })
+      })
+  });
+    function fromsearch(id) {
+        var _id = $("#searchid").val();
+        var _url = "/Output/Search/" + _id;
+        $.ajax({
+            type: "POST",
+            url: _url,
+            success: function (data) {
+
+                if (data == true) {
+                    window.location.href = "/Danh-sach-phieu-xuat";
+                }
+                else {
+                    window.location.href = "/Danh-sach-phieu-xuat";
+                }
+
+            }
+        })
+    }
+    var Editdetailoutput = function (id) {
+        var url = "/DetailOutput/Edit/" + id;
+        $("#editdetailOutput").load(url, function () {
+            $("#editdetailoutputModal").modal("show");
+
+        })
+
+    }
+    var confirm2 = function (id) {
+
+        $("#detailoutputId").val(id);
+        $("#deletedetailOutputModal").modal('show');
+
+    }
+
+     var confirm2 = function (id) {
+
+        $("#detailoutputId").val(id);
+        $("#deletedetailOutputModal").modal('show');
+
+    }
+    function deleteSession() {
+        var _url = "/Output/DeleteSession/";
+        $.ajax({
+            type: "POST",
+            url: _url,
+            success: function (data) {
+                    window.location.href = "/Danh-sach-phieu-xuat";
+
+            }
+        })
+    }
+    function run() {
+        var select = document.getElementById('unit');
+        var option = select.options[select.selectedIndex];
+
+        document.getElementById('Unit').value = option.value;
+
+    }
+    $("#addRow1").click(function () {
+
+       var html = '';
+       html += '<div id="inputFormRow">'
+       html += '<div class="row">';
+       html += '<div class="col-lg-1 form-data-output">';
+       html += '<input type="text" name="BillID[]" value="@ViewBag._id" id="BillID" class="form-control" required />';
+       html += '</div>';
+       html += '<div class="col-lg-2 form-data-output1">';
+       html += '<select class="form-control" name="ProductID[]" id="ProductID">';
+       html+= '@foreach (var item in ViewBag.product){<option value="@item.ProductID">@item.ProductName</option>}';
+       html += '</select>';
+       html += '</div>';
+       html += '<div class="col-lg-2 form-data-output2">';
+       html += '<select class="form-control" name="unit[]" id="unit">';
+       html+= '@foreach (var item in ViewBag.unit){<option>@item.unit</option>}';
+       html += '</select>';
+       html += '</div>';
+       html += '<div class="col-lg-2 form-data-output3">';
+       html += '<input type="number" name="Price[]" id="Price" class="form-control" required />';
+       html += '</div>';
+       html += '<div class="col-lg-1 form-data-output4">';
+       html += '<input type="number" name="Quantity[]" id="Quantity" class="form-control" required />';
+       html += '</div>';
+       html += '<div class="col-lg-3 form-data-output5">';
+       html += '<input type="text" name="Note[]" id="Note" class="form-control" required />';
+       html += '</div>';
+       html += '<div class="col-lg-1">';
+       html += '<div style="margin:4px;">';
+       html += '<button id="removeRow1" type="button" class="btn btn-danger"> X</button>';
+       html += '</div>';
+       html += '</div>';
+       html += '</div> <br/>';
+       html += '</div> ';
+        $('#newRow1').append(html);
+    });
+    // remove row
+    $(document).on('click', '#removeRow1', function () {
+        $(this).closest('#inputFormRow').remove();
+    });
+</script>

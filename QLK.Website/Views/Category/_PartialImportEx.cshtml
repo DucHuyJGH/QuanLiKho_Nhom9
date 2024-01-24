@@ -1,0 +1,32 @@
+﻿@model IEnumerable<QLK.Website.Model.Category>
+
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        
+    </tr>
+
+@foreach (var item in ViewBag.categori) {
+    <tr>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.CategoryName)*@
+            @item.CategoryName
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Description)*@
+            @item.Description
+        </td>
+       
+    </tr>
+}
+
+</table>
